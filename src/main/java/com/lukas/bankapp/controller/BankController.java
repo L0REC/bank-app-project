@@ -51,7 +51,7 @@ public class BankController {
 	}
 	
 	@PostMapping("/withdraw")
-	public String processWithdrawal(@RequestParam("amount") Double amount, RedirectAttributes redirectAttributes) {
+	public String processWithdrawal(@RequestParam Double amount, RedirectAttributes redirectAttributes) {
 		try {
 			accountService.withdraw(amount);
 			redirectAttributes.addFlashAttribute("successMessage", String.format("Withdrawal of $%.2f successful!", amount));

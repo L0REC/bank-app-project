@@ -1,0 +1,58 @@
+body {
+	background-color: #f8f9fa;
+}
+
+.card {
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	border: none;
+	margin-bottom: 1rem;
+}
+
+.card-header {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+	font-weight: 600;
+}
+
+.btn {
+	border-radius: 6px;
+}
+
+.navbar-brand {
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+
+.alert {
+	border-radius: 6px;
+}
+
+.table {
+	margin-bottom: 0;
+}
+
+.badge {
+	font-size: 0.75em;
+}
+
+.card:hover {
+	transform: translateY(-2px);
+	transition: transform 0.2s ease-in-out;
+}
+
+@media (max-width: 768px) {
+	.container {
+		padding: 0 15px;
+	}
+	
+	.card {
+		margin-bottom: 1rem;
+	}
+	
+	.btn-lg {
+		width: 100%;
+		margin-bottom: 0.5rem;
+	}
+ }
+
+
+
