@@ -7,7 +7,7 @@ async function quickDeposit() {
 	try {
 		const response = await fetch(`${API_BASE}/deposit`, {
 			method: 'POST',
-			header: {
+			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ amount: 10.0 })
