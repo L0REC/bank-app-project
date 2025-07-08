@@ -3,8 +3,11 @@ package com.lukas.bankapp.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lukas.bankapp.dto.TransactionRequest;
 import com.lukas.bankapp.exception.InsufficientFundsException;
 import com.lukas.bankapp.model.Account;
 import com.lukas.bankapp.service.AccountService;
@@ -40,19 +44,24 @@ public class ApiController {
 	}
 
 	@PostMapping("/deposit")
-	public ResponseEntity<Map<String, Object>> deposit(@RequestBody Map<String, Double> request) {
+	public ResponseEntity<Map<String, Object>> deposit(@Valid @RequestBody TransactionRequest request,
+			BindingResult bindingResult) {
 		Map<String, Object> response = new HashMap<>();
 
-		try {
-			Double amount = request.get("amount");
-			Account account = accountService.deposit(amount);
+		if (bindingResult.hasErrors()) {
+			response.put("success", false);
+			response.put("message", bindingResult.getFieldError().getDefaultMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
 
+		try {
+			Account account = accountService.deposit(request.getAmount());
 			response.put("success", true);
-			response.put("message", String.format("Deposit of %.2f successful", amount));
+			response.put("message", String.format("Deposit of %.2f successful", request.getAmount()));
 			response.put("balance", account.getBalance());
 			response.put("account", account);
-
 			return ResponseEntity.ok(response);
+
 		} catch (IllegalArgumentException e) {
 			response.put("success", false);
 			response.put("message", e.getMessage());

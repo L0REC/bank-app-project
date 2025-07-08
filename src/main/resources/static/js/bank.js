@@ -81,12 +81,12 @@ async function testAllEndpoints() {
 	console.log('Deposit test:', await depositResponse.json());
 
 	/*test withdrawal*/
-	const withdrawalResponse = await fetch(`${API_BASE}/withdrawal`, {
+	const withdrawResponse = await fetch(`${API_BASE}/withdraw`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ amount: 10.0 })
 	});
-	console.log('Withdrawal test:', await withdrawalResponse.json());
+	console.log('Withdraw test:', await withdrawResponse.json());
 
 	/*test account details*/
 	const accountResponse = await fetch(`${API_BASE}/account`);

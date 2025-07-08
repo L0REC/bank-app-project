@@ -11,7 +11,7 @@ public class Account {
 
 	private Long id;
 	
-	@NotNull
+	@NotNull(message = "Balance cannot be null")
 	@DecimalMin(value = "0.0", message = "Balance cannot be negative")
 	private Double balance;
 	
