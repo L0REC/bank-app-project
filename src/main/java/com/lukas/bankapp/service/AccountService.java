@@ -45,6 +45,11 @@ public class AccountService {
 			throw new InsufficientFundsException(String.format(
 					"Insufficient funds. Current balance: %.2f, Requested: %.2f", account.getBalance(), amount));
 		}
+		if (amount > account.getBalance()) {
+			throw new InsufficientFundsException(String.format("Insufficient funds. Current balance: %.2f, Requested: %.2f", account.getBalance(), amount));
+			
+		}
+		
 		Double oldBalance = account.getBalance();
 		Double newBalance = oldBalance - amount;
 		account.setBalance(newBalance);
