@@ -1,12 +1,12 @@
 package com.lukas.bankapp.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.lukas.bankapp.exception.InsufficientFundsException;
 import com.lukas.bankapp.model.Account;
 import com.lukas.bankapp.model.Transaction;
-
-
 
 @Service
 public class AccountService {
@@ -25,14 +25,21 @@ public class AccountService {
 		return account.getBalance();
 	}
 
+	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
+
 	public Account deposit(Double amount) {
+		logger.info("Processing deposit of ${}", amount);
+
 		if (amount <= 0) {
+			logger.warn("Invalid deposit amount: {}", amount);
 			throw new IllegalArgumentException("Deposit amount must be positive");
 		}
 
 		Double oldBalance = account.getBalance();
 		Double newBalance = oldBalance + amount;
 		account.setBalance(newBalance);
+
+		logger.info("Deposit successful. Balance changed from ${} to ${}", oldBalance, newBalance);
 
 		Transaction transaction = new Transaction("DEPOSIT", amount, newBalance);
 		account.addTransaction(transaction);
@@ -42,14 +49,15 @@ public class AccountService {
 
 	public Account withdraw(Double amount) {
 		if (amount <= 0) {
+			throw new IllegalArgumentException("Withdrawal amount must be positive");
+		}
+
+		if (amount > account.getBalance()) {
 			throw new InsufficientFundsException(String.format(
 					"Insufficient funds. Current balance: %.2f, Requested: %.2f", account.getBalance(), amount));
+
 		}
-		if (amount > account.getBalance()) {
-			throw new InsufficientFundsException(String.format("Insufficient funds. Current balance: %.2f, Requested: %.2f", account.getBalance(), amount));
-			
-		}
-		
+
 		Double oldBalance = account.getBalance();
 		Double newBalance = oldBalance - amount;
 		account.setBalance(newBalance);
