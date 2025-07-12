@@ -44,6 +44,7 @@ public class ApiController {
 
 	@GetMapping("/health")
 	public ResponseEntity<Map<String, Object>> healthCheck() {
+		
 		Map<String, Object> health = new HashMap<>();
 		health.put("status", "UP");
 		health.put("timestamp", LocalDateTime.now());
