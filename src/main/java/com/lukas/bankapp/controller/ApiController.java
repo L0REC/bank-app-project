@@ -1,5 +1,6 @@
 package com.lukas.bankapp.controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +22,6 @@ import com.lukas.bankapp.service.AccountService;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")
 public class ApiController {
 
 	@Autowired
@@ -43,6 +42,16 @@ public class ApiController {
 		return ResponseEntity.ok(response);
 	}
 
+	@GetMapping("/health")
+	public ResponseEntity<Map<String, Object>> healthCheck() {
+		Map<String, Object> health = new HashMap<>();
+		health.put("status", "UP");
+		health.put("timestamp", LocalDateTime.now());
+		health.put("service", "Banking Application");
+		health.put("version", "1.0.0");
+		return ResponseEntity.ok(health);
+	}
+	
 	@PostMapping("/deposit")
 	public ResponseEntity<Map<String, Object>> deposit(@Valid @RequestBody TransactionRequest request,
 			BindingResult bindingResult) {
