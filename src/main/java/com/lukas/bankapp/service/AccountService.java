@@ -1,5 +1,7 @@
 package com.lukas.bankapp.service;
 
+import java.sql.SQLException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -7,14 +9,25 @@ import org.springframework.stereotype.Service;
 import com.lukas.bankapp.exception.InsufficientFundsException;
 import com.lukas.bankapp.model.Account;
 import com.lukas.bankapp.model.Transaction;
+import com.lukas.bankapp.repository.AccountRepository;
 
 @Service
 public class AccountService {
 
 	private Account account;
+	private AccountRepository accountRepository;
 
 	public AccountService() {
-		this.account = new Account(100.0);
+		try {
+			accountRepository = new AccountRepository();
+			accountRepository.initialize();
+			
+			Double balance = accountRepository.getAccountBalance();
+			this.account = new Account(balance);
+			
+		} catch(SQLException e) {
+			throw new RuntimeException("Failed to initialize database", e);
+		}
 	}
 
 	public Account getAccount() {
