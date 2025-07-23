@@ -44,8 +44,4 @@ public class AccountRepository {
 			connection.close();
 		}
 	}
-
-	public Connection getConnection() {
-		return connection;
-	}
 }

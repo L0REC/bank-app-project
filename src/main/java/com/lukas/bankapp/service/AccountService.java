@@ -80,9 +80,4 @@ public class AccountService {
 
 		return account;
 	}
-
-	public Account resetAccount() {
-		this.account = new Account(100.0);
-		return account;
-	}
 }

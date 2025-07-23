@@ -100,15 +100,4 @@ public class ApiController {
 			return ResponseEntity.badRequest().body(response);
 		}
 	}
-
-	@PostMapping("/reset")
-	public ResponseEntity<Map<String, Object>> resetAccount() {
-		Account account = accountService.resetAccount();
-		Map<String, Object> response = new HashMap<>();
-		response.put("success", true);
-		response.put("message", "Account reset successfully");
-		response.put("account", account);
-		return ResponseEntity.ok(response);
-	}
-
 }
