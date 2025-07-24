@@ -24,15 +24,23 @@ public class AccountRepository {
 
 		try (PreparedStatement insertStmt = connection.prepareStatement(
 				"INSERT INTO accounts VALUES (?,?)")) {
-			insertStmt.setString(1, "account");
-			insertStmt.setDouble(2, 100.0);
-			insertStmt.execute();
+			
+			String[] usernames = {"user1","user2","user3"};
+			double[] balances = {100.0, 150.0, 200.0};
+			
+			//全てアカウントをbatchに追加
+			for(int i = 0; i < usernames.length; i++) {
+				insertStmt.setString(1, usernames[i]);
+				insertStmt.setDouble(2, balances[i]);
+				insertStmt.addBatch();
+			}
+			insertStmt.executeBatch();
 		}
 	}
 
 	public Double getAccountBalance() throws SQLException {
 		try (PreparedStatement stmt = connection.prepareStatement("SELECT balance FROM accounts WHERE id = ?")) {
-			stmt.setString(1, "account");
+			stmt.setString(1, "user1");
 			try (ResultSet rs = stmt.executeQuery()) {
 				return rs.next() ? rs.getDouble("balance") : 0.0;
 			}
